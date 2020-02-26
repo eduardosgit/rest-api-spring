@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.eduardo.restapi.domain.Categoria;
 import com.eduardo.restapi.repositories.CategoriaRepository;
+import com.eduardo.restapi.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -16,6 +17,7 @@ public class CategoriaService {
 	
 	public Categoria find(Integer id) {
 		Optional<Categoria> obj = categoriaRepository.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjectNotFoundException());
+				//"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 }
