@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.eduardo.restapi.domain.Categoria;
+import com.eduardo.restapi.domain.Cidade;
+import com.eduardo.restapi.domain.Estado;
 import com.eduardo.restapi.domain.Produto;
 import com.eduardo.restapi.repositories.CategoriaRepository;
+import com.eduardo.restapi.repositories.CidadeRepository;
+import com.eduardo.restapi.repositories.EstadoRepository;
 import com.eduardo.restapi.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -20,6 +24,12 @@ public class ApirestApplication implements CommandLineRunner{
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EstadoRepository estadoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApirestApplication.class, args);
@@ -28,7 +38,7 @@ public class ApirestApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		//mock para instanciar os objetos
+		//mock para instancia dos objetos Categoria e Produto
 		Categoria cat1 = new Categoria(null, "Informática");
 		Categoria cat2= new Categoria(null, "Escritório");
 		
@@ -41,10 +51,24 @@ public class ApirestApplication implements CommandLineRunner{
 		
 		p1.getCategorias().addAll(Arrays.asList(cat1));
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
-		p3.getCategorias().addAll(Arrays.asList(cat1));
+		p3.getCategorias().addAll(Arrays.asList(cat1));				
 		
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
+		
+		//mock para instancia dos objetos Estado e cidade
+		Estado est1 = new Estado(null, "Minas Gerais");
+		Estado est2 = new Estado(null, "São Paulo");
+		
+		Cidade cid1 = new Cidade(null, "Uberlândia", est1);
+		Cidade cid2 = new Cidade(null, "São Paulo", est2);
+		Cidade cid3 = new Cidade(null, "Campinas", est2);
+		
+		est1.getCidades().addAll(Arrays.asList(cid1));
+		est2.getCidades().addAll(Arrays.asList(cid2, cid3));
+		
+		estadoRepository.saveAll(Arrays.asList(est1, est2));
+		cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
 	}
 
 }
