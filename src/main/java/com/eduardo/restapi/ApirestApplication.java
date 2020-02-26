@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.eduardo.restapi.domain.Categoria;
 import com.eduardo.restapi.domain.Cidade;
+import com.eduardo.restapi.domain.Cliente;
+import com.eduardo.restapi.domain.Endereco;
 import com.eduardo.restapi.domain.Estado;
 import com.eduardo.restapi.domain.Produto;
+import com.eduardo.restapi.domain.enums.TipoCliente;
 import com.eduardo.restapi.repositories.CategoriaRepository;
 import com.eduardo.restapi.repositories.CidadeRepository;
+import com.eduardo.restapi.repositories.ClienteRepository;
+import com.eduardo.restapi.repositories.EnderecoRepository;
 import com.eduardo.restapi.repositories.EstadoRepository;
 import com.eduardo.restapi.repositories.ProdutoRepository;
 
@@ -30,6 +35,12 @@ public class ApirestApplication implements CommandLineRunner{
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApirestApplication.class, args);
@@ -69,6 +80,19 @@ public class ApirestApplication implements CommandLineRunner{
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
+		
+		//mock para instancia dos objetos Cliente e Endereco
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "12345678912", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("996784084", "32345142"));
+		
+		Endereco end1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38400362", cli1, cid1);
+		Endereco end2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, cid2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(end1, end2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(end1, end2));
+		
 	}
 
 }
